@@ -13,10 +13,17 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">MFBILGIN</a>
-            <div>
-                <a class="btn btn-success" href="{{ route('login') }}">Giriş Yap</a>
-                <a class="btn btn-warning" href="{{ route('register') }}">Kayıt Ol</a>
-            </div>
+            @if(session('user'))
+                <div>
+                    <a class="btn btn-danger" href="{{ route('logout') }}">Çıkış Yap</a>
+                </div>
+            @else
+                <div>
+                    <a class="btn btn-success" href="{{ route('login') }}">Giriş Yap</a>
+                    <a class="btn btn-warning" href="{{ route('register') }}">Kayıt Ol</a>
+                </div>
+            @endif
+
         </div>
     </nav>
 </header>

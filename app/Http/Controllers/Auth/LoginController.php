@@ -28,4 +28,11 @@ class LoginController extends Controller
             return redirect()->back()->with('error', 'Invalid login details')->withInput();
         }
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        session()->forget('user');
+        return redirect()->route('login');
+    }
 }
