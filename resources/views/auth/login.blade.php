@@ -1,14 +1,6 @@
 @extends('layouts.app')
 @section('title','Login Page')
 @section('content')
-    @if(session('user'))
-        <div class="alert alert-warning mx-auto mt-5 w-50" role="alert">
-            Zaten giriş yaptınız. Anasayfaya yönlendiriliyorsunuz...
-        </div>
-        <script>
-            window.location.href = "{{ route('home') }}";
-        </script>
-    @endif
     @if(session('error'))
         {
         <div class="text-center alert alert-danger mx-auto w-50" role="alert">
