@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @method static create(array $array)
  * @method static where(string $string, string $email)
+ * @method static find($id)
  */
 class User extends Authenticatable
 {
@@ -22,6 +23,22 @@ class User extends Authenticatable
             return $user;
         }
         return null;
+    }
+
+    public function showAllUsers()
+    {
+        return User::all()->map(function ($user){
+            $name = explode(' ',$user->name);
+            $last_name = array_pop($name);
+            $first_name = implode(' ',$name);
+            return (object)[
+                'id' => $user->id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ];
+        });
     }
 
     public function isAdmin()
