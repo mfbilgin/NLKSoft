@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         if(Auth::attempt($request->only('email', 'password'))){
             $user = (new User)->getUserByEmail($request->email);
-            $request->session()->put('user', $user);
+            Auth::login($user);
 
             return redirect()->route('home');
         }else{
