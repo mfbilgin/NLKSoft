@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Rules\MultipleWords;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Nette\Schema\ValidationException;
 
 class CategoryController extends Controller
 {
@@ -18,19 +21,22 @@ class CategoryController extends Controller
 
     public function showCategoryListPage(): Factory|\Illuminate\Foundation\Application|View|Application
     {
-        return view('admin.category.category-list');
+        return view('admin.category.index');
     }
+
     public function showEditCategoryPage($id): Factory|\Illuminate\Foundation\Application|View|Application
     {
         $category = Category::find($id);
         return view('admin.category.category-edit', compact('category'));
     }
 
-    public static function addCategory(Request $request): RedirectResponse
+    public function addCategory(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name'
-        ]);
+        try {
+            $this->validator($request->all())->validate();
+        } catch (ValidationException $e) {
+            return redirect()->route('admin.category.add')->withErrors($e->validator->errors())->withInput();
+        }
         Category::create($request->all());
         return redirect()->route('admin.category.list')->with('info', 'Kategori başarıyla eklendi.');
     }
@@ -41,15 +47,23 @@ class CategoryController extends Controller
         return redirect()->route('admin.category.list')->with('info', 'Kategori başarıyla silindi.');
     }
 
-    public static function updateCategory(Request $request, $id): RedirectResponse
+    public function updateCategory(Request $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,'
-        ]);
+        try {
+            $this->validator($request->all())->validate();
+        } catch (ValidationException $e) {
+            return redirect()->route('admin.category.add')->withErrors($e->validator->errors())->withInput();
+        }
         $category = Category::find($id);
         $category->update($request->all());
         return redirect()->route('admin.category.list')->with('info', 'Kategori başarıyla güncellendi.');
     }
 
+    protected function validator($data): \Illuminate\Validation\Validator
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255', 'min:4', 'unique:categories'],
+        ]);
+    }
 }
 
