@@ -123,6 +123,20 @@
     </div>
 
     <div class="content">
+        @if($errors->any())
+            <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+                @foreach($errors->all() as $error)
+                    <div>{{$error}}</div>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if(session('info'))
+            <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                {{session('info')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         @yield('admin-content')
     </div>
 @endsection
