@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\MultipleWords;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -34,7 +35,7 @@ class RegisterController extends Controller
     protected function validator(array $data): \Illuminate\Validation\Validator
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255', 'min:4'],
+            'name' => ['required', 'string', 'max:255', 'min:4', new MultipleWords()],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
