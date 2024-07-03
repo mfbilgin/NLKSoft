@@ -25,9 +25,9 @@ class User extends Authenticatable
         return null;
     }
 
-    public function showAllUsers()
+    public function getAllUsers()
     {
-        return User::all()->map(function ($user){
+        return User::orderBy('created_at','desc')->get()->map(function ($user){
             $name = explode(' ',$user->name);
             $last_name = array_pop($name);
             $first_name = implode(' ',$name);
