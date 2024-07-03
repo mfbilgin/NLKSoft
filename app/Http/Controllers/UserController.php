@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function showUserListPage(): Factory|\Illuminate\Foundation\Application|View|Application
     {
-        return view('admin.user.user-list');
+        return view('admin.user.index');
     }
 
     public function deleteUser($id): RedirectResponse
