@@ -13,9 +13,13 @@ class ProductController extends Controller
     {
         return view('admin.product.product-add');
     }
-    public function showProductListPage(): Factory|\Illuminate\Foundation\Application|View|Application
+    public function showProductListPageForAdmin(): Factory|\Illuminate\Foundation\Application|View|Application
     {
-        return view('admin.product.product-list');
+        return view('admin.product.index');
     }
 
+    public function showEditProductPage()
+    {
+        return view ('admin.product.product-edit');
+    }
 }
