@@ -1,20 +1,13 @@
 @php use App\Models\User; @endphp
 @extends('layouts.admin')
-@section('title','Add Product')
+@section('title','Users')
 @section('admin-content')
-    @php($users = (new User)->showAllUsers())
-    @if(session('info'))
-        <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
-            {{session('info')}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    @php($users = (new User)->getAllUsers())
     <div class="container text-center">
         <div>
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Ad</th>
                     <th scope="col">Soyad</th>
                     <th scope="col">Email</th>
@@ -27,26 +20,29 @@
                 @foreach($users as $user)
                     @if(auth()->user()->id != $user->id)
                         <tr>
-                            <th scope="row">{{$user->id}}</th>
                             <td>{{$user->first_name}}</td>
                             <td>{{$user->last_name}}</td>
                             <td>{{$user->email}}</td>
                             <td>{{$user->role}}</td>
                             <td>
                                 @if($user->role == 'admin')
-                                    <form action="{{ route('admin.user.change-role', ['id' => $user->id,'newRole' => 'user'])  }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-warning">
-                                        <i class="bi bi-pencil"></i> Kullanıcı Yap
-                                    </button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('admin.user.change-role', ['id' => $user->id,'newRole' => 'admin']) }}" method="POST">
+                                    <form
+                                        action="{{ route('user.change-role', ['id' => $user->id,'newRole' => 'user'])  }}"
+                                        method="POST">
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" class="btn btn-warning">
-                                            <i class="bi bi-pencil"></i> Admin Yap
+                                            <i class="bi bi-arrow-down-circle"></i> Kullanıcıya Düşür
+                                        </button>
+                                    </form>
+                                @else
+                                    <form
+                                        action="{{ route('user.change-role', ['id' => $user->id,'newRole' => 'admin']) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="bi bi-arrow-up-circle"></i> Admine Yükselt
                                         </button>
                                     </form>
                                 @endif
