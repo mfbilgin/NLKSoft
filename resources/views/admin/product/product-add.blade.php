@@ -1,20 +1,6 @@
 @php use App\Models\Category; @endphp
 @extends('layouts.admin')
 @section('title','Add Product')
-@section('styles')
-    <style>
-        .carousel-inner {
-            width: 200px; /* Sabit genişlik */
-            height: 250px; /* Sabit yükseklik */
-        }
-
-        .carousel-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Resmi kırpıp, alanı doldur */
-        }
-    </style>
-@endsection
 @section('admin-content')
     @php($categories = Category::all())
     <div class="text-center mb-5">
@@ -57,19 +43,22 @@
                     <div class="mb-3">
                         <label for="images" class="form-label">Ürün Fotoğrafları</label>
                         <input type="file" class="form-control" id="images" name="images[]"
-                               accept=".png, .jpg, .jpeg, .gif" multiple>
+                               accept=".png, .jpg, .jpeg, .gif, .webp" multiple>
                     </div>
-                    <div class="mb-3">
-                        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                    <div class="mb-3 col-6 offset-3" style="display: none" id="carousel-collapse-div">
+                        <div id="productCarousel" class="carousel slide " data-bs-ride="carousel">
                             <div class="carousel-inner" id="carousel-inner">
                                 <!-- Resim önizlemeleri buraya eklenecek -->
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                                    data-bs-slide="prev">
+                                <span class="bi bi-arrow-left-circle-fill text-black fs-2" style="border-radius: 25%"
+                                      aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                                    data-bs-slide="next">
+                                <span class="bi bi-arrow-right-circle-fill text-black fs-2" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
@@ -85,24 +74,63 @@
 @section('scripts')
     <script>
         document.getElementById('images').addEventListener('change', function (event) {
-            const files = event.target.files;
-            const carouselInner = document.getElementById('carousel-inner');
-            carouselInner.innerHTML = '';
-            for (let i = 0; i < files.length; i++) {
+                const files = event.target.files;
+                if (files.length > 0) {
+                    document.getElementById('carousel-collapse-div').style.display = 'block';
+                }
+                const carouselInner = document.getElementById('carousel-inner');
+                const allowedExtensions = ['image/jpg', 'image/png', 'image/jpeg', 'image/gif','image/webp'];
+                carouselInner.innerHTML = '';
+                if (files.length > 5) {
+                    alert('En fazla 5 resim ekleyebilirsin.');
+                    clearInput()
+                    return;
+                }
+                for (let i = 0; i < files.length; i++) {
+                    if (!allowedExtensions.includes(files[i].type)) {
+                        alert('Sadece jpg, png, jpeg ve gif formatlarında resim ekleyebilirsiniz.');
+                        clearInput()
+                        break;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const imgElement = new Image();
+                        imgElement.onload = function () {
+                            const width = imgElement.width;
+                            const height = imgElement.height;
+                            const aspectRatio = width / height;
+                            if (aspectRatio < 0.75 || aspectRatio > 1.25) {
+                                alert('Resmin genişlik ve yükseklik oranı 0.75 ile 1.25 arasında olmalıdır.');
+                                clearInput()
+                                return;
+                            }
 
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const div = document.createElement('div');
-                    div.className = 'carousel-item' + (i === 0 ? ' active' : '');
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'd-block w-100';
-                    div.appendChild(img);
-                    carouselInner.appendChild(div);
-                };
-                reader.readAsDataURL(files[i]);
-            }
-        });
+                            const div = document.createElement('div');
+                            div.className = 'carousel-item' + (i === 0 ? ' active' : '');
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'card-img  object-fit-scale';
+                            img.style.width = '100%';
+                            img.style.height = '300px';
+                            div.appendChild(img);
+                            carouselInner.appendChild(div);
+                        };
+                        imgElement.src = e.target.result;
+                    };
+                    reader.readAsDataURL(files[i]);
+                }
+            });
+
+        document.addEventListener('DOMContentLoaded',(event)=>{
+            clearInput()
+        })
+
+        const clearInput = function () {
+            const input = document.getElementById('images');
+            input.value = '';
+            document.getElementById('carousel-collapse-div').style.display = 'none';
+        };
+
     </script>
 @endsection
 
