@@ -50,7 +50,8 @@
                 <li class="nav-item">
                     <p class="d-inline-flex gap-1">
                         <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
+                                data-bs-target="#collapseProducts" aria-expanded="false"
+                                aria-controls="collapseProducts">
                             Ürün Yönetimi
                         </button>
                     </p>
@@ -75,7 +76,8 @@
                 <li class="nav-item">
                     <p class="d-inline-flex gap-1">
                         <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseCategories" aria-expanded="false" aria-controls="collapseCategories">
+                                data-bs-target="#collapseCategories" aria-expanded="false"
+                                aria-controls="collapseCategories">
                             Kategori Yönetimi
                         </button>
                     </p>
@@ -107,7 +109,7 @@
                     <div class="collapse" id="collapseUsers">
                         <div class="card card-body bg-dark">
                             <ul class="list-unstyled">
-                                <li >
+                                <li>
                                     <a href="{{route('admin.user.list')}}" class="nav-link text-white">
                                         Kullanıcılar
                                     </a>
@@ -118,10 +120,8 @@
                 </li>
             </ul>
         </div>
-
-
     </div>
-
+    
     <div class="content">
         @if($errors->any())
             <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
