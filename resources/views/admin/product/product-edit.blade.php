@@ -12,31 +12,30 @@
             @csrf
             @method('PUT')
             <div class="row">
-                <div class="col-6">
-                    <div class="form-floating mb-4">
+                <div class="col-6 d-flex flex-column">
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="name" name="name"
                                value="{{ $product->name }}" placeholder="" required>
                         <label for="name">Ürün Adı</label>
                     </div>
-                    <div class="form-floating mb-4">
-                        <input type="number" class="form-control" id="unitPrice" name="unitPrice"
-                               value="{{ $product->unitPrice }}" placeholder="" required>
-                        <label for="unitPrice">Adet Fiyatı</label>
-                    </div>
-                    <div class="form-floating mb-4">
-                        <input type="number" class="form-control" id="unitsInStock" name="unitsInStock"
-                               value="{{ $product->unitsInStock }}" placeholder="" required>
-                        <label for="unitsInStock">Stok Adedi</label>
-                    </div>
-                    <div class="mt-5">
+                    <div class="mt-auto">
                         <label for="description">Ürün Açıklaması</label>
                         <textarea class="form-control" id="description" name="description" placeholder=""
                                   rows="4"
                                   required>{{ $product->description }}</textarea>
                     </div>
-
                 </div>
                 <div class="col-6 d-flex flex-column">
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="unitPrice" name="unitPrice"
+                               value="{{ $product->unitPrice }}" placeholder="" required>
+                        <label for="unitPrice">Adet Fiyatı</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="unitsInStock" name="unitsInStock"
+                               value="{{ $product->unitsInStock }}" placeholder="" required>
+                        <label for="unitsInStock">Stok Adedi</label>
+                    </div>
                     <div class="form-floating mb-3">
                         <select class="form-select" id="category_id" name="category_id" required>
                             <option value="{{$product->category->id}}" selected>{{$product->category->name}}</option>
@@ -48,51 +47,40 @@
                         </select>
                         <label for="category_id">Kategori</label>
                     </div>
-                    <div class="row">
-                        <div class="mb-3 @if(count($product->images) == 5) d-none @endif">
-                            <label for="images" class="form-label">Yeni fotoğraf ekle</label>
-                            <input type="file" class="form-control" id="images" name="images[]"
-                                   accept=".png, .jpg, .jpeg, .gif, .webp" multiple>
-                        </div>
-                        <p class="text-black-50 text-center @if(count($product->images) == 0) d-none @endif">Silmek
-                            istediğiniz resmin üzerine tıklayın</p>
-                        @for($i = 0; $i<3 && $i<count($product->images);$i++)
-                            <div class="col-4">
-                                <img src="{{asset($product->images[$i]->url)}}" class="object-fit-scale delete-image"
-                                     style="width: 100%; height: 200px; cursor:pointer"
-                                     alt="{{$product->name}} fotoğrafı">
-                                <form id="delete-form" action="{{ route('image.delete', $product->images[$i]->id) }}"
-                                      method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </div>
-                        @endfor
+                    <div class="mb-3 @if(count($product->images) == 5) d-none @endif">
+                        <label for="images" class="form-label">Yeni fotoğraf ekle</label>
+                        <input type="file" class="form-control" id="images" name="images[]"
+                               accept=".png, .jpg, .jpeg, .gif, .webp" multiple>
                     </div>
-                    @if(count($product->images) > 3)
-                        <div class="row mb-3">
-                            @for($i = 3; $i<5 && $i<count($product->images);$i++)
-                                <div class="col-4 mt-3 @if($i == 3) offset-2 @endif">
-                                    <img src="{{asset($product->images[$i]->url)}}"
-                                         class="object-fit-scale delete-image"
-                                         style="width: 100%; height: 200px;  cursor:pointer"
-                                         alt="{{$product->name}} fotoğrafı">
-                                    <form id="delete-form"
-                                          action="{{ route('image.delete', $product->images[$i]->id) }}" method="POST"
-                                          style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </div>
-                            @endfor
-                        </div>
-                    @endif
-                    <button id="update-button" class="btn btn-warning container-fluid float-end mt-auto" onclick="sendForm()"><i
+                    <a id="update-button" class="btn btn-warning container-fluid float-end mt-auto"
+                       onclick="sendForm()"><i
                             class="bi bi-pencil-square"></i> Ürünü Güncelle
-                    </button>
+                    </a>
                 </div>
             </div>
         </form>
+
+        <div class="mt-4">
+            <p class="text-black-50 text-center @if(count($product->images) == 0) d-none @endif">Silmek
+                istediğiniz resmin üzerine tıklayın</p>
+            <div class="container-fluid">
+
+                @foreach($product->images as $image)
+                    <div class="col-4 float-start">
+                        <img src="{{asset($image->url)}}"
+                             class="object-fit-scale delete-image"
+                             style="width: 100%; height: 200px; cursor:pointer"
+                             alt="{{$product->name}} fotoğrafı">
+                        <form id="delete-form"
+                              action="{{ route('image.delete', $image->id) }}"
+                              method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
 @endsection
 @section('scripts')
@@ -103,13 +91,9 @@
         };
         document.getElementById('images').addEventListener('change', function (event) {
             const files = event.target.files;
-            if (files.length > 0) {
-                document.getElementById('carousel-collapse-div').style.display = 'block';
-            }
-            const carouselInner = document.getElementById('carousel-inner');
+
             const allowedExtensions = ['image/jpg', 'image/png', 'image/jpeg', 'image/gif', 'image/webp'];
-            carouselInner.innerHTML = '';
-            const alreadyExistImages = document.querySelectorAll('.carousel-item');
+            const alreadyExistImages = document.querySelectorAll('.delete-image');
             console.log(alreadyExistImages.length)
             if (files.length + alreadyExistImages.length > 5) {
                 alert('En fazla 5 resim ekleyebilirsin.');
@@ -132,18 +116,7 @@
                         if (aspectRatio < 0.75 || aspectRatio > 1.25) {
                             alert('Resmin genişlik ve yükseklik oranı 0.75 ile 1.25 arasında olmalıdır.');
                             clearInput()
-                            return;
                         }
-
-                        const div = document.createElement('div');
-                        div.className = 'carousel-item' + (i === 0 ? ' active' : '');
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.className = 'card-img  object-fit-scale';
-                        img.style.width = '100%';
-                        img.style.height = '300px';
-                        div.appendChild(img);
-                        carouselInner.appendChild(div);
                     };
                     imgElement.src = e.target.result;
                 };
@@ -154,7 +127,6 @@
         const clearInput = function () {
             const input = document.getElementById('images');
             input.value = '';
-            document.getElementById('carousel-collapse-div').style.display = 'none';
         };
 
         document.addEventListener('DOMContentLoaded', function () {
