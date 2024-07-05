@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +27,8 @@ Route::get('admin/product/update/{id}',[ProductController::class,'showEditProduc
 Route::post('product/create',[ProductController::class,'addProduct'])->name('product.store')->middleware('admin');
 Route::delete('product/delete/{id}',[ProductController::class,'deleteProduct'])->name('product.delete')->middleware('admin');
 Route::put('product/update/{id}',[ProductController::class,'updateProduct'])->name('product.update')->middleware('admin');
+
+Route::delete('image/delete/{id}',[ImageController::class,'deleteImage'])->name('image.delete')->middleware('admin');
 
 Route::get('admin/category/list', [CategoryController::class, 'showCategoryListPage'])->name('admin.category.list')->middleware('admin');
 Route::get('admin/category/add', [CategoryController::class, 'showCategoryAddPage'])->name('admin.category.add')->middleware('admin');
