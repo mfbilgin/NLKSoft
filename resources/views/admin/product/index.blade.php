@@ -32,7 +32,7 @@
                             <div class="carousel-inner" id="carousel-inner">
                                 @foreach($product->images as $key => $image)
                                     <div class="carousel-item @if($key == 0) active @endif">
-                                        <img src="{{asset($image->url)}}" style="width: 100%; height: 100%;object-fit: contain"
+                                        <img src="{{asset($image->url)}}" style="width: 100%; height: 250px;object-fit: contain"
                                              alt="{{$product->name}}">
                                     </div>
                                 @endforeach
