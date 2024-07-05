@@ -1,4 +1,6 @@
-@php use App\Models\Product; @endphp
+@php use App\Models\Product;
+
+@endphp
 @extends('layouts.admin')
 @section('title','Products')
 @section('admin-content')
@@ -25,20 +27,42 @@
 
             @foreach($products as $product)
                 <tr>
-                    <td>Ürün resmi</td>
+                    <td class="@if(count($product->images)==0) d-none @endif">
+                        <div id="{{$product->id}}Carousel" class="carousel slide" style="width: 225px;">
+                            <div class="carousel-inner" id="carousel-inner">
+                                @foreach($product->images as $key => $image)
+                                    <div class="carousel-item @if($key == 0) active @endif">
+                                        <img src="{{asset($image->url)}}" style="width: 100%; height: 100%;object-fit: contain"
+                                             alt="{{$product->name}}">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button class="carousel-control-prev @if(count($product->images)==1) d-none @endif" type="button" data-bs-target="#{{$product->id}}Carousel"
+                                    data-bs-slide="prev">
+                                <span class="bi bi-arrow-left-circle-fill text-black fs-2" style="border-radius: 25%"
+                                      aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next  @if(count($product->images)==1) d-none @endif" type="button" data-bs-target="#{{$product->id}}Carousel"
+                                    data-bs-slide="next">
+                                <span class="bi bi-arrow-right-circle-fill text-black fs-2" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </td>
                     <td>{{$product->name}}</td>
                     <td>{{$product->unitsInStock}}</td>
-                    <td>{{$product->unitPrice}}</td>
-                    <td>{{$product->description}}</td>
-                    <td>{{$product->category}}</td>
+                    <td>{{$product->unitPrice}} ₺</td>
+                    <td>{!! $product->description !!}</td>
+                    <td>{{$product->category->name}}</td>
                     <td>
-                        <a href="{{route('category.edit', $product->id)}}" type="submit"
+                        <a href="{{route('product.edit', $product->id)}}" type="submit"
                            class="btn btn-warning">
                             <i class="bi bi-pencil"></i> Güncelle
                         </a>
                     </td>
                     <td>
-                        <form action="{{ route('category.delete', $product->id) }}" method="POST">
+                        <form action="{{ route('product.delete', $product->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">
