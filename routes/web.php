@@ -8,9 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/',[ProductController::class,'index'])->name('home');
 
 Route::get('register', [RegisterController::class, 'showRegisterPage'])->name('register')->middleware('guest');
 Route::post('register', [RegisterController::class, 'register']);
@@ -27,6 +25,8 @@ Route::get('admin/product/update/{id}',[ProductController::class,'showEditProduc
 Route::post('product/create',[ProductController::class,'addProduct'])->name('product.store')->middleware('admin');
 Route::delete('product/delete/{id}',[ProductController::class,'deleteProduct'])->name('product.delete')->middleware('admin');
 Route::put('product/update/{id}',[ProductController::class,'updateProduct'])->name('product.update')->middleware('admin');
+Route::get('product/detail/{id}',[ProductController::class,'showProductDetailPage'])->name('product.detail');
+Route::get('/products',[ProductController::class,'showProductByCategoryIdPage'])->name('product.by.category');
 
 Route::delete('image/delete/{id}',[ImageController::class,'deleteImage'])->name('image.delete')->middleware('admin');
 
