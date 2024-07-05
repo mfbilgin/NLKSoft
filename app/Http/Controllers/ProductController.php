@@ -8,11 +8,33 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Nette\Schema\ValidationException;
 
 class ProductController extends Controller
 {
+    public function index(Request $request): Factory|\Illuminate\Foundation\Application|View|Application
+    {
+
+        $query = Product::query();
+        if($request->has('category_id')){
+            $query->where('category_id',$request->get('category_id'));
+        }
+
+        if($request->has('min_price') && $request->has('max_price')){
+            $query->whereBetween('unitPrice',[$request->get('min_price'),$request->get('max_price')]);
+        }
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        $products = $query->get();
+
+        return view('home', compact('products'));
+
+    }
     public function showProductAddPage(): Factory|\Illuminate\Foundation\Application|View|Application
     {
         return view('admin.product.product-add');
@@ -27,6 +49,19 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         return view('admin.product.product-edit',compact('product'));
+    }
+
+    public function showProductDetailPage($id)
+    {
+        $product = Product::find($id);
+        return view('product.product-detail',compact('product'));
+    }
+
+    public function showProductByCategoryIdPage(Request $request)
+    {
+        $categoryId = $request->get('category_id');
+        $products = Product::where('category_id',$categoryId)->get();
+        return view('product.product-by-category',compact('products'));
     }
 
     public function addProduct(Request $request)
