@@ -68,8 +68,10 @@
                 @foreach($product->images as $image)
                     <div class="col-4 float-start">
                         <img src="{{asset($image->url)}}"
-                             class="object-fit-scale delete-image"
-                             style="width: 100%; height: 200px; cursor:pointer"
+                             class="object-fit-scale delete-image mb-3 border border-2"
+                             style="height: 200px; width: 90%; cursor:pointer; border-radius: 8px;
+            padding: 5px;
+            display: inline-block;"
                              alt="{{$product->name}} fotoğrafı">
                         <form id="delete-form"
                               action="{{ route('image.delete', $image->id) }}"
@@ -80,6 +82,12 @@
                     </div>
                 @endforeach
             </div>
+        </div>
+        <div style="visibility: hidden;
+            background-color: lightblue;
+            padding: 20px;
+            margin-top: 20px;">
+            Boş alan
         </div>
     </div>
 @endsection
@@ -107,19 +115,7 @@
                     break;
                 }
                 const reader = new FileReader();
-                reader.onload = function (e) {
-                    const imgElement = new Image();
-                    imgElement.onload = function () {
-                        const width = imgElement.width;
-                        const height = imgElement.height;
-                        const aspectRatio = width / height;
-                        if (aspectRatio < 0.75 || aspectRatio > 1.25) {
-                            alert('Resmin genişlik ve yükseklik oranı 0.75 ile 1.25 arasında olmalıdır.');
-                            clearInput()
-                        }
-                    };
-                    imgElement.src = e.target.result;
-                };
+
                 reader.readAsDataURL(files[i]);
             }
         });
@@ -130,6 +126,7 @@
         };
 
         document.addEventListener('DOMContentLoaded', function () {
+            CKEDITOR.replace("description");
             document.querySelectorAll('.delete-image').forEach(function (img) {
                 img.addEventListener('click', function () {
                     if (confirm('Bu resmi silmek istediğinize emin misiniz?')) {
