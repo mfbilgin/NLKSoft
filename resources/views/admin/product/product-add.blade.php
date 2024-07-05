@@ -74,54 +74,54 @@
 @section('scripts')
     <script>
         document.getElementById('images').addEventListener('change', function (event) {
-                const files = event.target.files;
-                if (files.length > 0) {
-                    document.getElementById('carousel-collapse-div').style.display = 'block';
-                }
-                const carouselInner = document.getElementById('carousel-inner');
-                const allowedExtensions = ['image/jpg', 'image/png', 'image/jpeg', 'image/gif','image/webp'];
-                carouselInner.innerHTML = '';
-                if (files.length > 5) {
-                    alert('En fazla 5 resim ekleyebilirsin.');
+            const files = event.target.files;
+            if (files.length > 0) {
+                document.getElementById('carousel-collapse-div').style.display = 'block';
+            }
+            const carouselInner = document.getElementById('carousel-inner');
+            const allowedExtensions = ['image/jpg', 'image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+            carouselInner.innerHTML = '';
+            if (files.length > 5) {
+                alert('En fazla 5 resim ekleyebilirsin.');
+                clearInput()
+                return;
+            }
+            for (let i = 0; i < files.length; i++) {
+                if (!allowedExtensions.includes(files[i].type)) {
+                    alert('Sadece jpg, png, jpeg ve gif formatlarında resim ekleyebilirsiniz.');
                     clearInput()
-                    return;
+                    break;
                 }
-                for (let i = 0; i < files.length; i++) {
-                    if (!allowedExtensions.includes(files[i].type)) {
-                        alert('Sadece jpg, png, jpeg ve gif formatlarında resim ekleyebilirsiniz.');
-                        clearInput()
-                        break;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const imgElement = new Image();
-                        imgElement.onload = function () {
-                            const width = imgElement.width;
-                            const height = imgElement.height;
-                            const aspectRatio = width / height;
-                            if (aspectRatio < 0.75 || aspectRatio > 1.25) {
-                                alert('Resmin genişlik ve yükseklik oranı 0.75 ile 1.25 arasında olmalıdır.');
-                                clearInput()
-                                return;
-                            }
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgElement = new Image();
+                    imgElement.onload = function () {
+                        const width = imgElement.width;
+                        const height = imgElement.height;
+                        const aspectRatio = width / height;
+                        if (aspectRatio < 0.75 || aspectRatio > 1.25) {
+                            alert('Resmin genişlik ve yükseklik oranı 0.75 ile 1.25 arasında olmalıdır.');
+                            clearInput()
+                            return;
+                        }
 
-                            const div = document.createElement('div');
-                            div.className = 'carousel-item' + (i === 0 ? ' active' : '');
-                            const img = document.createElement('img');
-                            img.src = e.target.result;
-                            img.className = 'card-img  object-fit-scale';
-                            img.style.width = '100%';
-                            img.style.height = '300px';
-                            div.appendChild(img);
-                            carouselInner.appendChild(div);
-                        };
-                        imgElement.src = e.target.result;
+                        const div = document.createElement('div');
+                        div.className = 'carousel-item' + (i === 0 ? ' active' : '');
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'card-img  object-fit-scale';
+                        img.style.width = '100%';
+                        img.style.height = '300px';
+                        div.appendChild(img);
+                        carouselInner.appendChild(div);
                     };
-                    reader.readAsDataURL(files[i]);
-                }
-            });
+                    imgElement.src = e.target.result;
+                };
+                reader.readAsDataURL(files[i]);
+            }
+        });
 
-        document.addEventListener('DOMContentLoaded',(event)=>{
+        document.addEventListener('DOMContentLoaded', (event) => {
             clearInput()
         })
 
@@ -130,6 +130,8 @@
             input.value = '';
             document.getElementById('carousel-collapse-div').style.display = 'none';
         };
+        CKEDITOR.replace("description");
+
 
     </script>
 @endsection
