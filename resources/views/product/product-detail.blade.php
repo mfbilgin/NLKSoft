@@ -19,10 +19,6 @@
             text-decoration: none;
         }
 
-        .mt-6 {
-            margin-top: 6rem;
-        }
-
         .go-to-desc:hover {
             text-decoration: underline;
         }
@@ -32,10 +28,11 @@
     <div class="container">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('home')}}" class="text-black text-decoration-none">Ana sayfa</a></li>
+                <li class="breadcrumb-item"><a href="{{route('home')}}" class="text-black text-decoration-none">Ana
+                        sayfa</a></li>
                 <li class="breadcrumb-item"><a
-                            href="{{route('product.by.category',['category_id' => $product->category->id])}}"
-                            class="text-black text-decoration-none">{{$product->category->name}}</a></li>
+                        href="{{route('product.by.category',['category_id' => $product->category->id])}}"
+                        class="text-black text-decoration-none">{{$product->category->name}}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{$product->name}}</li>
             </ol>
         </nav>
@@ -70,10 +67,28 @@
 
                 <h1 class="product-title text-center mt-2">{{$product->name}}</h1>
 
-                <div class=" float-start">
-                    <div class="card d-inline-block border-warning text-center align-content-center mt-5"
-                         style="width: 35%; height: 5rem">
-                        <p class="text-warning-emphasis fs-3 fw-bold card-text">{{$product->unitPrice}} ₺</p>
+                <div class="row">
+
+                    <div class="col-6">
+                        <div class="text-center mt-5">
+                            <p class="text-success-emphasis fs-3 fw-bold card-text">{{$product->unitPrice}} ₺</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center mt-5">
+                            <p class="fs-5 fw-bold card-text">
+                                {{$product->get_avg_rating()}} / 5 ({{$product->get_reviews_count()}} değerlendirme)
+                            </p>
+                            @if($product->get_reviews_count() == 0)
+                                <a href="#rating" class="text-muted" style="font-size: 0.8rem">Bu
+                                    ürün için henüz değerlendirme
+                                    yapılmamış. İlk sen değerlendir. (Satın alma koşulu eklenecek)</a>
+                            @else
+                                <a href="#rating" class="text-muted" style="font-size: 0.8rem">
+                                    Değerlendirmeleri Göster
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 <a href="#description" class="text-muted mt-3 text-decoration-none go-to-desc">Ürün Detayı</a>
@@ -93,14 +108,21 @@
             </div>
         </div>
 
-        <div class="text-start mt-6 w-50 container" id="description">
+        <div class="text-start mt-5 container" id="description">
             <p class="list-unstyled">{!! $product->description !!}</p>
         </div>
-
-        <div class="container">
-            <p>
-                DEĞERLENDİRMELER BURAYA GELECEK
-            </p>
+        <div id="rating">
+            @if(session('review_status'))
+                <div class="w-50 mt-5 text-center mx-auto alert alert-{{session('review_status')}} alert-dismissible">
+                    {{session('message')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            @if(auth()->check())
+                @include('product_reviews.create')
+            @endif
+            @include('product_reviews.index')
         </div>
+
     </div>
 @endsection

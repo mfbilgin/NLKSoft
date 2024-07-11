@@ -19,13 +19,16 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        if(Auth::attempt($request->only('email', 'password'))){
-            $user = (new User)->getUserByEmail($request->email);
-            Auth::login($user);
+        $user = (new User)->getUserByEmail($request->email);
 
+        if($user && Auth::attempt($request->only('email', 'password'))){
+            if($user && !$user->email_verified_at){
+                return redirect()->route('verification.notice');
+            }
+            Auth::login($user);
             return redirect()->route('home');
         }else{
-            return redirect()->back()->with('error', 'Invalid login details')->withInput();
+            return redirect()->back()->with('status','danger')->with('message','Hatalı giriş!!!')->withInput();
         }
     }
 

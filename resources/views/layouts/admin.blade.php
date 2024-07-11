@@ -76,6 +76,30 @@
                 <li class="nav-item">
                     <p class="d-inline-flex gap-1">
                         <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseReviews" aria-expanded="false" aria-controls="collapseReviews">
+                            Değerlendirme Yönetimi
+                        </button>
+                    </p>
+                    <div class="collapse" id="collapseReviews">
+                        <div class="card card-body bg-dark">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="{{route('admin.review.waiting.list')}}" class="nav-link text-white">
+                                        Onay Bekleyen Değerlendirmeler
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin.review.list')}}" class="nav-link text-white">
+                                        Tüm Değerlendirmeler
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <p class="d-inline-flex gap-1">
+                        <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseCategories" aria-expanded="false"
                                 aria-controls="collapseCategories">
                             Kategori Yönetimi
@@ -118,10 +142,11 @@
                         </div>
                     </div>
                 </li>
+
             </ul>
         </div>
     </div>
-    
+
     <div class="content">
         @if($errors->any())
             <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">

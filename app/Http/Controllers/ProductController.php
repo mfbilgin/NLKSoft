@@ -126,4 +126,6 @@ class ProductController extends Controller
             'images.*' => ['image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096']
         ]);
     }
+
+
 }

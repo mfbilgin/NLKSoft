@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class EnsureUserIsAdmin
 {
     /**
      * Handle an incoming request.
@@ -18,6 +18,6 @@ class AdminMiddleware
         if(auth()->check() && auth()->user()->isAdmin()){
             return $next($request);
         }
-        return redirect()->route('home');
+        abort(404);
     }
 }

@@ -1,13 +1,6 @@
 @extends('layouts.app')
 @section('title','Login Page')
 @section('content')
-    @if(session('error'))
-        {
-        <div class="text-center alert alert-danger mx-auto w-50" role="alert">
-            {{session('error')}}
-        </div>
-        }
-    @endif
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-12 offset-md-3">

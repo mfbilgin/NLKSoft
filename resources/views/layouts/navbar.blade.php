@@ -1,11 +1,22 @@
+@php use App\Models\CartItem;use App\Models\User; @endphp
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">MFBILGIN</a>
+        <a class="navbar-brand" href="/">NLKSoft</a>
         <div>
             @if(auth()->check())
-                @php $user = \App\Models\User::find(auth()->id()) @endphp
+                @php $user = User::find(auth()->id()) @endphp
                 <div>
                     <div class="dropdown  me-1">
+                        <a href="{{route('cart.index')}}" class="text-decoration-none">
+                            <button type="button" class="btn border border-1 border-warning position-relative mt-1">
+                                <i class="bi bi-cart-fill text-warning fs-4"></i>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{count($cart_items = CartItem::where('cart_id',auth()->user()->cart->id)->get())}}
+                                     <span class="visually-hidden">Sepetteki ürünler</span>
+                                 </span>
+                            </button>
+                        </a>
                         <button class="btn dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                             {{ $user->name}}

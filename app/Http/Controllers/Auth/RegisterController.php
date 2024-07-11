@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\User;
 use App\Rules\MultipleWords;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -28,8 +34,13 @@ class RegisterController extends Controller
         } catch (ValidationException $e) {
             return redirect()->route('register')->withErrors($e->validator->errors())->withInput();
         }
-        $this->create($request->all());
-        return redirect()->route('login');
+        $user = $this->create($request->all());
+        Cart::create([
+            'user_id' => $user->id
+        ]);
+        Auth::login($user);
+        $user->sendEmailVerificationNotification();
+        return redirect()->route('verification.notice');
     }
 
     protected function validator(array $data): \Illuminate\Validation\Validator
@@ -41,9 +52,9 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function create(array $data): void
+    protected function create(array $data): User
     {
-        User::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,16 @@
 </header>
 
 <main>
+    @if(session('status'))
+        <div class="w-50 mt-5 text-center mx-auto alert alert-{{session('status')}} alert-dismissible">
+            {{session('message')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @php
+            session()->forget('status');
+            session()->forget('message');
+         @endphp
+    @endif
     @yield('content')
 </main>
 
