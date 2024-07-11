@@ -43,7 +43,7 @@
             <h3>Sipariş Detayları</h3>
             <p><strong>Sipariş Numarası:</strong> {{ $order->id }}</p>
             <p><strong>Tarih:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
-            <p><strong>Tutar:</strong> {{ number_format($order->total, 2) }} TL</p>
+            <p><strong>Tutar:</strong> {{ number_format($order->total_amount, 2) }} TL</p>
             <h4>Kargo Adresi</h4>
             <p>{{ $order->address->contact_name }}</p>
             <p>{{ $order->address->address }}</p>
