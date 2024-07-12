@@ -16,7 +16,7 @@
 
 <main>
     @if(session('status'))
-        <div class="w-50 mt-5 text-center mx-auto alert alert-{{session('status')}} alert-dismissible">
+        <div class="w-75 mt-5 text-center mx-auto alert alert-{{session('status')}} alert-dismissible">
             {{session('message')}}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>

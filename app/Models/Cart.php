@@ -34,6 +34,16 @@ class Cart extends Model
         return $total_price;
     }
 
+    public function product_count()
+    {
+        $product_count = 0;
+        $cart_items = $this->cartItems;
+        foreach ($cart_items as $cartItem) {
+            $product_count += $cartItem->quantity;
+        }
+        return $product_count;
+    }
+
     public function empty()
     {
         $this->cartItems()->delete();

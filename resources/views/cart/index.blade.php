@@ -47,81 +47,111 @@
         $total_price = $cart->total_price();
     @endphp
     <div class="container mt-md-5 mt-sm-0">
+
         <div class="row">
-            <h3 class="mb-lg-5 mb-md-2">Sepetim ({{count($cart_items)}} Ürün)</h3>
             <div class="col-8">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <ul class="list-group">
-                            @foreach($cart_items as $cart_item)
-                                @php
-                                    $product = $cart_item->product;
-                                @endphp
-                                <li class="list-group-item border-0">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <div id="{{$product->id}}Carousel"
-                                                 class="carousel slide d-inline-block w-100">
-                                                <div class="carousel-inner" id="carousel-inner">
-                                                    @foreach($product->images as $key => $image)
-                                                        <div class="carousel-item @if($key == 0) active @endif">
-                                                            <img src="{{asset($image->url)}}"
-                                                                 style="width: 100%; height: 200px;object-fit: contain; border-radius: 2%"
-                                                                 alt="{{$product->name}}"
-                                                                 class="card-img-top border border-3">
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                                <button
-                                                    class="carousel-control-prev @if(count($product->images)==1) d-none @endif"
-                                                    type="button" data-bs-target="#{{$product->id}}Carousel"
-                                                    data-bs-slide="prev">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="mb-lg-5 mb-md-2">Sepetim ({{count($cart_items)}} Ürün)</h3>
+                    </div>
+                    <div class="col-6">
+                        <form action="{{route('cart.empty')}}" method="post" class="float-end">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="_method" value="DELETE">
+                            <i onclick="clear_cart()" class="bi bi-trash3 text-danger fs-5" style="cursor: pointer"
+                               data-bs-toggle="tooltip" data-bs-title="Sepeti Boşalt"></i>
+                        </form>
+                    </div>
+                </div>
+                @if(count($cart_items)>0)
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <ul class="list-group">
+                                @foreach($cart_items as $cart_item)
+                                    @php
+                                        $product = $cart_item->product;
+                                    @endphp
+                                    <li class="list-group-item border-0">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div id="{{$product->id}}Carousel"
+                                                     class="carousel slide d-inline-block w-100">
+                                                    <div class="carousel-inner" id="carousel-inner">
+                                                        @foreach($product->images as $key => $image)
+                                                            <div class="carousel-item @if($key == 0) active @endif">
+                                                                <img src="{{asset($image->url)}}"
+                                                                     style="width: 100%; height: 200px;object-fit: contain; border-radius: 2%"
+                                                                     alt="{{$product->name}}"
+                                                                     class="card-img-top border border-3">
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                    <button
+                                                        class="carousel-control-prev @if(count($product->images)==1) d-none @endif"
+                                                        type="button" data-bs-target="#{{$product->id}}Carousel"
+                                                        data-bs-slide="prev">
                                                                     <span
                                                                         class="bi bi-arrow-left-circle-fill text-black fs-2"
                                                                         style="border-radius: 25%"
                                                                         aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Previous</span>
-                                                </button>
-                                                <button
-                                                    class="carousel-control-next  @if(count($product->images)==1) d-none @endif"
-                                                    type="button" data-bs-target="#{{$product->id}}Carousel"
-                                                    data-bs-slide="next">
+                                                        <span class="visually-hidden">Previous</span>
+                                                    </button>
+                                                    <button
+                                                        class="carousel-control-next  @if(count($product->images)==1) d-none @endif"
+                                                        type="button" data-bs-target="#{{$product->id}}Carousel"
+                                                        data-bs-slide="next">
                                                                                 <span
                                                                                     class="bi bi-arrow-right-circle-fill text-black fs-2"
                                                                                     aria-hidden="true"></span>
-                                                    <span class="visually-hidden">Next</span>
-                                                </button>
+                                                        <span class="visually-hidden">Next</span>
+                                                    </button>
+                                                </div>
+
                                             </div>
+                                            <div class="col-8 d-flex flex-column">
+                                                <a href="{{route('product.detail',$product->id)}}"
+                                                   class="text-decoration-none text-dark"><h5
+                                                        class="card-title cursor-pointer">{{$product->name}}</h5>
+                                                </a>
 
-                                        </div>
-                                        <div class="col-8 d-flex flex-column">
-                                            <h5 class="card-title cursor-pointer">{{$product->name}}</h5>
+                                                <div class="quantity-selector"
+                                                     id="quantity-selector-{{$cart_item->id}}">
+                                                    <button id="quantity_decrease_btn_{{$cart_item->id}}" type="button"
+                                                            onclick="decreaseQuantity('{{$cart_item->id}}')">-
+                                                    </button>
+                                                    <input id="quantity_{{$cart_item->id}}" type="text"
+                                                           value="{{$cart_item->quantity}}" readonly>
+                                                    <button id="increment_{{$cart_item->id}}" type="button"
+                                                            onclick="increaseQuantity('{{$cart_item->id}}')">
+                                                        +
+                                                    </button>
+                                                </div>
+                                                <span id="spinner{{$cart_item->id}}"
+                                                      class="spinner-border spinner-border-sm d-none"
+                                                      style="color:#ff8800" role="status" aria-hidden="true"></span>
 
-                                            <div class="quantity-selector" id="quantity-selector-{{$cart_item->id}}">
-                                                <button id="quantity_decrease_btn_{{$cart_item->id}}" type="button"
-                                                        onclick="decreaseQuantity('{{$cart_item->id}}')">-
-                                                </button>
-                                                <input id="quantity_{{$cart_item->id}}" type="text"
-                                                       value="{{$cart_item->quantity}}" readonly>
-                                                <button id="increment_{{$cart_item->id}}" type="button" onclick="increaseQuantity('{{$cart_item->id}}')">
-                                                    +
-                                                </button>
+
+                                                <p class="card-text fw-bold fs-3 cursor-pointer mt-auto text-success">{{$product->unitPrice}}
+                                                    ₺</p>
                                             </div>
-                                            <span id="spinner{{$cart_item->id}}" class="spinner-border spinner-border-sm d-none" style="color:#ff8800" role="status" aria-hidden="true"></span>
-
-
-                                            <p class="card-text fw-bold fs-3 cursor-pointer mt-auto text-success">{{$product->unitPrice}}
-                                                ₺</p>
                                         </div>
-                                    </div>
-                                </li>
-                                @if(!$loop->last)
-                                    <hr class="w-100">
-                                @endif
-                            @endforeach
-                        </ul>
+                                    </li>
+                                    @if(!$loop->last)
+                                        <hr class="w-100">
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="alert alert-warning text-center" role="alert">
+                        <i class="bi bi-cart-dash"></i> Sepetinde hiç ürün yok. <a href="{{route('home')}}"
+                                                                                   class="text-decoration-none">Hemen
+                            alışverişe başla!</a>
+                    </div>
+                @endif
+
             </div>
             <div class="col-4">
                 <div class="card">
@@ -191,7 +221,7 @@
 
         function increaseQuantity(cart_item_id) {
             document.getElementById('spinner' + cart_item_id).classList.remove('d-none');
-            document.getElementById('quantity-selector-'+cart_item_id).classList.add('d-none');
+            document.getElementById('quantity-selector-' + cart_item_id).classList.add('d-none');
 
             axios.post('/cart/increase', {
                 cart_item_id: cart_item_id,
@@ -209,7 +239,7 @@
 
         function decreaseQuantity(cart_item_id) {
             document.getElementById('spinner' + cart_item_id).classList.remove('d-none');
-            document.getElementById('quantity-selector-'+cart_item_id   ).classList.add('d-none');
+            document.getElementById('quantity-selector-' + cart_item_id).classList.add('d-none');
             if (document.getElementById('quantity_' + cart_item_id).value === '1' && !confirm('Ürünü silmek istediğinize emin misiniz?')) {
                 return;
             }
@@ -224,5 +254,14 @@
                 console.log(error);
             });
         }
+
+        function clear_cart() {
+            if (confirm('Sepetinizdeki tüm ürünleri silmek istediğinize emin misiniz?')) {
+                document.querySelector('form').submit();
+            }
+        }
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
 @endsection

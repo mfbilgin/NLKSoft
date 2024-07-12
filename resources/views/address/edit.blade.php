@@ -6,11 +6,28 @@
 
         <div class="card">
             <div class="card-title">
-                <h5 class="text-center mt-3">Adres Ekleme</h5>
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="mt-2 ms-2">Adres Düzenleme</h5>
+                    </div>
+                    <div class="col-4">
+                        @if(session('status'))
+                            <a href="{{route('address.select')}}" class="btn btn-primary mt-2 me-2 float-end">Adres Seçimine Git</a>
+                        @else
+                            <form action="{{route('address.destroy',$address->id)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="from_select" value="true">
+                                <button type="submit" class="btn btn-danger mt-2 me-2 float-end">Adresi Sil</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
             </div>
             <div class="card-body">
-                <form action="{{route('address.store')}}" method="post">
+                <form action="{{route('address.update',$address->id)}}" method="post">
                     @csrf
+                    @method('PUT')
                     <div class="row mb-3">
                         <div class="col-6">
                             <div class="form-floating">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AddressController extends Controller
 {
@@ -25,10 +26,10 @@ class AddressController extends Controller
         $address->phone = $request->phone;
         $address->identity_number = $request->identity_number;
         $address->save();
-        return redirect()->back()->with('status','success')->with('message','Adresin başarıyla eklendi.');
+        return redirect()->back()->with('status', 'success')->with('message', 'Adresin başarıyla eklendi.');
     }
 
-    public function select_address()
+    public function show_select_address_page()
     {
         $user_id = auth()->id();
         $addresses = Address::where('user_id', $user_id)->get();
@@ -46,14 +47,18 @@ class AddressController extends Controller
         $this->validator($request);
         $address = Address::find($id);
         $address->update($request->all());
-        return redirect()->back()->with('status','success')->with('message','Adresin başarıyla güncellendi.');
+        return redirect()->back()->with('status', 'success')->with('message', 'Adresin başarıyla güncellendi.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        Log::info($request);
         $address = Address::find($id);
         $address->delete();
-        return redirect()->back()->with('status','success')->with('message','Adresin başarıyla silindi.');
+        if ($request->has('from_select')) {
+            return redirect()->route('address.select')->with('status', 'success')->with('message', 'Adresin başarıyla silindi.');
+        }
+        return redirect()->back()->with('status', 'success')->with('message', 'Adresin başarıyla silindi.');
     }
 
     private function validator($data)

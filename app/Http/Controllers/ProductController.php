@@ -18,6 +18,8 @@ class ProductController extends Controller
     {
 
         $query = Product::query();
+        $query->where('unitsInStock','>',0);
+        $query->orderBy('category_id');
         if($request->has('category_id')){
             $query->where('category_id',$request->get('category_id'));
         }
@@ -44,7 +46,6 @@ class ProductController extends Controller
     {
         return view('admin.product.index');
     }
-
     public function showEditProductPage($id)
     {
         $product = Product::find($id);
@@ -54,6 +55,12 @@ class ProductController extends Controller
     public function showProductDetailPage($id)
     {
         $product = Product::find($id);
+        if(!$product){
+            return redirect()->route('home')->with('status','info')->with('message','Ürün bulunamadı.');
+        }
+        if($product->unitsInStock == 0){
+            return redirect()->route('home')->with('status','info')->with('message','Ürün stokta bulunmamaktadır.');
+        }
         return view('product.product-detail',compact('product'));
     }
 
@@ -120,7 +127,7 @@ class ProductController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255', 'min:2', 'unique:categories'],
             'description' => ['required', 'string', 'min:10'],
-            'unitPrice' => ['required', 'numeric', 'min:0'],
+            'unitPrice' => ['required', 'numeric', 'min:0','max:100000'],
             'unitsInStock' => ['required', 'integer', 'min:0'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'images.*' => ['image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096']

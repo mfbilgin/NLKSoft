@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -96,5 +96,23 @@ class User extends Authenticatable implements MustVerifyEmail
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function is_bought_product(Product $product)
+    {
+        $order_items = OrderItem::where('user_id', $this->id)->get();
+        $result = 0;
+        foreach ($order_items as $order_item) {
+            if($order_item->product->id == $product->id){
+                $result = 1;
+            }
+        }
+        return $result;
+    }
+
+
+    public function has_reviewed($product_id): bool
+    {
+        return ProductReview::where('user_id', $this->id)->where('product_id',$product_id)->exists();
     }
 }

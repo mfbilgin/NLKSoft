@@ -1,7 +1,7 @@
 @php use App\Models\CartItem;use App\Models\User; @endphp
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">NLKSoft</a>
+        <a class="navbar-brand" href="/">{{env('APP_NAME')}}</a>
         <div>
             @if(auth()->check())
                 @php $user = User::find(auth()->id()) @endphp
@@ -23,6 +23,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end w-100 text-center">
                             <li><a class="dropdown-item" href="#">Bilgilerim</a></li>
+                            <li><a class="dropdown-item" href="{{route('order.list')}}">Siparişlerim</a></li>
                             @if($user->isAdmin())
                                 <li><a class="dropdown-item" href="/admin/dashboard">Admin</a></li>
                             @endif

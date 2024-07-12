@@ -10,21 +10,26 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\VerifyRequestNotHasAuth;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ProductController::class, 'index'])->name('home');
-
-
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('login', [LoginController::class, 'login']);
-
-Route::get('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
-
 Auth::routes(['verify' => true]);
 
+Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('product/detail/{id}', [ProductController::class, 'showProductDetailPage'])->name('product.detail');
+Route::get('/products', [ProductController::class, 'showProductByCategoryIdPage'])->name('product.by.category');
+
+Route::middleware(VerifyRequestNotHasAuth::class)->group(function () {
+    Route::get('register', [RegisterController::class, 'showRegisterPage'])->name('register');
+    Route::post('register', [RegisterController::class, 'register']);
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login')->middleware(VerifyRequestNotHasAuth::class);
+    Route::post('login', [LoginController::class, 'login']);
+});
+
 Route::middleware(['admin', 'verified'])->group(function () {
+    Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('admin/dashboard', [ProductController::class, 'showProductListPageForAdmin'])->name('admin.dashboard');
     Route::get('admin/product/list', [ProductController::class, 'showProductListPageForAdmin'])->name('admin.product.list');
@@ -58,31 +63,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('cart/add', [CartController::class, 'add_to_cart'])->name('cart.add');
     Route::put('/cart/increase', [CartController::class, 'increase_cart_item_quantity'])->name('cart.increase');
     Route::put('cart/decrease', [CartController::class, 'decrease_cart_item_quantity'])->name('cart.decrease');
+    Route::delete('cart/delete', [CartController::class, 'clear_cart'])->name('cart.empty');
 
     Route::delete('review/delete/{id}', [ProductReviewController::class, 'destroy'])->name('review.delete');
     Route::post('review/store', [ProductReviewController::class, 'store'])->name('review.store');
 
     Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
-    Route::post('address/select', [CartController::class, 'address_add'])->name('checkout.address.add');
+    Route::get('cart/address', [AddressController::class, 'show_select_address_page'])->name('address.select');
+    Route::post('address/select', [CartController::class, 'select_address'])->name('checkout.address.add');
 
     Route::get('address/create', [AddressController::class, 'create'])->name('address.create');
     Route::post('address/store', [AddressController::class, 'store'])->name('address.store');
 
-    Route::get('cart/address', [AddressController::class, 'select_address'])->name('address.select');
-
     Route::get('address/edit/{id}', [AddressController::class, 'edit'])->name('address.edit');
     Route::put('address/update/{id}', [AddressController::class, 'update'])->name('address.update');
 
-    Route::delete('address/delete/{id}', [AddressController::class, 'destroy'])->name('address.delete');
+    Route::delete('address/delete/{id}', [AddressController::class, 'destroy'])->name('address.destroy');
+
     Route::post('checkout/callback', [CartController::class, 'callback'])->name('checkout.callback')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('order/success', [OrderController::class, 'success'])->name('order.success');
     Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
+
+    Route::get('orders', [OrderController::class, 'user_order_list'])->name('order.list');
+    Route::get('order/detail/{id}', [OrderController::class, 'order_detail'])->name('order.detail');
 });
-Route::get('product/detail/{id}', [ProductController::class, 'showProductDetailPage'])->name('product.detail');
-Route::get('register', [RegisterController::class, 'showRegisterPage'])->name('register')->middleware('guest');
-Route::post('register', [RegisterController::class, 'register']);
-Route::get('/products', [ProductController::class, 'showProductByCategoryIdPage'])->name('product.by.category');
-
-
-Route::get('test',[CartController::class,'test']);

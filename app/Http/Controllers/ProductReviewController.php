@@ -13,8 +13,7 @@ class ProductReviewController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        Log::info($request);
+    {;
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'user_id' => 'required|exists:users,id',

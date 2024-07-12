@@ -26,6 +26,11 @@ class Order extends Model
         return $this->belongsTo(Address::class);
     }
 
+    public function order_items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public static function create($total_amount,$address_id,$user_id): Order
     {
         $order = new Order();

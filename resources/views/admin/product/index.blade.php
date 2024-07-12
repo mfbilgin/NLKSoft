@@ -50,7 +50,7 @@
                             </button>
                         </div>
                     </td>
-                    <td>{{$product->name}}</td>
+                    <td><a href="{{route('product.detail',$product->id)}}" class="text-decoration-none text-black">{{$product->name}}</a></td>
                     <td>{{$product->unitsInStock}}</td>
                     <td>{{$product->unitPrice}} ₺</td>
                     <td>{!! $product->description !!}</td>

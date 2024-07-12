@@ -5,7 +5,16 @@
 
         <div class="card">
             <div class="card-title">
-                <h5 class="text-center mt-3">Adres Ekleme</h5>
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="mt-2 ms-2">Adres Düzenleme</h5>
+                    </div>
+                    <div class="col-4">
+                        @if(session('status'))
+                            <a href="{{route('address.select')}}" class="btn btn-primary mt-2 me-2 float-end">Adres Seçimine Git</a>
+                        @endif
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <form action="{{route('address.store')}}" method="post">

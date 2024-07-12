@@ -80,9 +80,15 @@
                                 {{$product->get_avg_rating()}} / 5 ({{$product->get_reviews_count()}} değerlendirme)
                             </p>
                             @if($product->get_reviews_count() == 0)
-                                <a href="#rating" class="text-muted" style="font-size: 0.8rem">Bu
-                                    ürün için henüz değerlendirme
-                                    yapılmamış. İlk sen değerlendir. (Satın alma koşulu eklenecek)</a>
+                                @if(auth()->check() &&((auth()->user()->is_bought_product($product) == 1)))
+                                    <a href="#rating" class="text-muted" style="font-size: 0.8rem">Bu
+                                        ürün için henüz değerlendirme
+                                        yapılmamış. İlk sen değerlendir.</a>
+                                @else
+                                    <span class="text-muted" style="font-size: 0.8rem">
+                                        Bu ürün için henüz değerlendirme yapılmamış.
+                                    </span>
+                                @endif
                             @else
                                 <a href="#rating" class="text-muted" style="font-size: 0.8rem">
                                     Değerlendirmeleri Göster
@@ -102,9 +108,13 @@
                     </div>
                 @endif
 
-                <a href="{{route('home')}}"
-                   class="btn btn-warning text-danger-emphasis w-100 mt-auto bi bi-cart-plus-fill">
-                    Sepete Ekle</a>
+                <form action="{{route('cart.add')}}" method="POST" class="mt-auto">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{$product->id}}">
+                    <button class="btn btn-success w-100  bi bi-cart-plus-fill" type="submit">
+                        Sepete Ekle
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -118,7 +128,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            @if(auth()->check())
+            @if(auth()->check() && auth()->user()->has_reviewed($product->id) != 1 && ((auth()->user()->is_bought_product($product) == 1)))
                 @include('product_reviews.create')
             @endif
             @include('product_reviews.index')

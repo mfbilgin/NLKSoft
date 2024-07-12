@@ -15,6 +15,7 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 1rem 0;
+            overflow-y: auto;
         }
 
         .sidebar a {
