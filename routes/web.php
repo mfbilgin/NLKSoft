@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductReviewController;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]);
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('lang/{code}',[LanguageController::class,'setLanguage'])->name('lang');
 Route::get('product/detail/{id}', [ProductController::class, 'showProductDetailPage'])->name('product.detail');
 Route::get('/products', [ProductController::class, 'showProductByCategoryIdPage'])->name('product.by.category');
 
@@ -55,7 +57,7 @@ Route::middleware(['admin', 'verified'])->group(function () {
     Route::get('admin/review/waiting-list', [ProductReviewController::class, 'show_waiting_reviews'])->name('admin.review.waiting.list');
     Route::get('admin/review/list', [ProductReviewController::class, 'show_all'])->name('admin.review.list');
     Route::put('admin/review/approve/{id}', [ProductReviewController::class, 'approve'])->name('admin.review.approve');
-    Route::delete('admin/review/delete/{id}', [ProductReviewController::class, 'delete'])->name('admin.review.delete');
+    Route::delete('admin/review/delete/{id}', [ProductReviewController::class, 'destroy'])->name('admin.review.delete');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

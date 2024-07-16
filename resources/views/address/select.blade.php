@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Adreslerim')
+@section('title',__('titles.titles.address_list'))
 @section('styles_and_links')
     <style>
         .address-card {
@@ -26,7 +26,7 @@
                     <div class="card address-card">
                         <div class="card-body text-center">
                             <a href="{{route('address.create')}}" class="btn border-0 bi bi-plus-circle d-block"></a>
-                            <a href="{{route('address.create')}}" class="text-decoration-none text-dark">Yeni Adres Ekle</a>
+                            <a href="{{route('address.create')}}" class="text-decoration-none text-dark">{{__('titles.address.add')}}</a>
                         </div>
                     </div>
                 </div>
@@ -42,16 +42,16 @@
                                 <div class="custom-radio">
                                     <input type="radio" name="selected_address" value="{{ $address->id }}"
                                            id="address{{ $address->id }}">
-                                    <label for="address{{ $address->id }}">Adresi Seç</label>
+                                    <label for="address{{ $address->id }}">{{__('titles.address.select_this')}}</label>
                                 </div>
                                 <a href="{{ route('address.edit', $address->id) }}"
-                                   class="btn btn-outline-primary bi bi-pencil-square float-end mt-auto"> Adresi Düzenle</a>
+                                   class="btn btn-outline-primary bi bi-pencil-square float-end mt-auto"> {{__('titles.address.edit')}}</a>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-            <button id="submit-button" type="submit" class="btn btn-warning w-25 float-end mt-3">Adresi Onayla</button>
+            <button id="submit-button" type="submit" class="btn btn-warning w-25 float-end mt-3">{{__('titles.address.select_this')}}</button>
         </form>
     </div>
 @endsection

@@ -78,7 +78,6 @@ class CartController extends Controller
     {
         require_once(base_path('iyzipay-php-master/samples/config.php'));
 
-
         # create request class
         $request = new \Iyzipay\Request\RetrieveCheckoutFormRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);

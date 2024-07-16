@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Adres Ekleme Sayfası')
+@section('title',__('titles.titles.address_add'))
 @section('content')
     <div class="container mt-5 w-50">
 
@@ -7,11 +7,11 @@
             <div class="card-title">
                 <div class="row">
                     <div class="col-8">
-                        <h5 class="mt-2 ms-2">Adres Düzenleme</h5>
+                        <h5 class="mt-2 ms-2">{{__('titles.address.add')}}</h5>
                     </div>
                     <div class="col-4">
                         @if(session('status'))
-                            <a href="{{route('address.select')}}" class="btn btn-primary mt-2 me-2 float-end">Adres Seçimine Git</a>
+                            <a href="{{route('address.select')}}" class="btn btn-primary mt-2 me-2 float-end">{{__('titles.address.go_to_select')}}</a>
                         @endif
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                                        id="contact_name" name="contact_name" placeholder="contact_name"
                                        autocomplete="contact_name"
                                 >
-                                <label for="contact_name">İsim Soyisim</label>
+                                <label for="contact_name">{{__('titles.user.name')}}</label>
                                 @error('contact_name')
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
@@ -41,7 +41,7 @@
                                        name="identity_number"
                                        autocomplete="identity_number"
                                        placeholder="identity_number">
-                                <label for="identity_number">T.C. Kimlik Numarası</label>
+                                <label for="identity_number">{{__('titles.address.identity')}}</label>
                                 @error('identity_number')
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
@@ -58,7 +58,7 @@
                                        autocomplete="phone"
                                        value="{{old('phone')}}"
                                 >
-                                <label for="phone">Telefon Numarası</label>
+                                <label for="phone">{{__('titles.address.phone')}}</label>
                                 @error('phone')
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
@@ -68,7 +68,7 @@
                             <div class="form-floating">
                                 <select class="form-select @error('city') is-invalid @enderror" id="city" name="city"
                                         required>
-                                    <option value="" selected disabled>Seçiniz</option>
+                                    <option value="" selected disabled>{{__('titles.address.select')}}</option>
                                     <option value="Adana">Adana</option>
                                     <option value="Adıyaman">Adıyaman</option>
                                     <option value="Afyonkarahisar">Afyonkarahisar</option>
@@ -151,7 +151,7 @@
                                     <option value="Yozgat">Yozgat</option>
                                     <option value="Zonguldak">Zonguldak</option>
                                 </select>
-                                <label for="city">Şehir</label>
+                                <label for="city">{{__('titles.address.city')}}</label>
                             </div>
                             @error('city')
                             <div class="invalid-feedback">{{$message}}</div>
@@ -164,7 +164,7 @@
                         <textarea class="form-control @error('address') is-invalid @enderror" id="address"
                                   name="address" placeholder="address" autocomplete="address"
                         >{{old('address')}}</textarea>
-                                <label for="address">Adres</label>
+                                <label for="address">{{__('titles.address.address')}}</label>
                             </div>
                             @error('address')
                             <div class="invalid-feedback">{{$message}}</div>
@@ -179,7 +179,7 @@
                                        placeholder="zip_code"
                                        value="{{old('zip_code')}}"
                                        autocomplete="zip_code">
-                                <label for="zip_code">Posta Kodu</label>
+                                <label for="zip_code">{{__('titles.address.zip_code')}}</label>
                                 @error('zip_code')
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
@@ -191,7 +191,7 @@
                                        id="address_name" name="address_name"
                                        value="{{old('address_name')}}"
                                        placeholder="address_name">
-                                <label for="address_name">Adres Başlığı</label>
+                                <label for="address_name">{{__('titles.address.title')}}</label>
                                 @error('address_name')
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
@@ -200,7 +200,7 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                        <button type="submit" class="btn btn-primary">{{__('titles.general.save')}}</button>
                     </div>
                 </form>
             </div>

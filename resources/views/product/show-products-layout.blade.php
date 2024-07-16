@@ -75,7 +75,7 @@
                         @csrf
                         <input type="hidden" name="product_id" value="{{$product->id}}">
                         <button class="bi bi-cart-plus-fill  btn btn-success" type="submit">
-                            Sepete Ekle
+                            {{__('titles.product.add_to_cart')}}
                         </button>
                     </form>
                 </div>

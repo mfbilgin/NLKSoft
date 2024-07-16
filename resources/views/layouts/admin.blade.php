@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Admin Dashboard')
+@section('title',__('titles.dashboard.dashboard'))
 @section('style')
     <style>
         .sidebar {
@@ -43,7 +43,7 @@
             <div class="d-flex flex-column mb-3 text-white text-decoration-none fs-5 my-auto">
                 <a href="{{route('home')}}" class="align-items-center text-white text-decoration-none">
                     <i class="bi bi-house"></i>
-                    <span class="ms-3">Anasayfaya Dön</span>
+                    <span class="ms-3">{{__('titles.dashboard.return_to_home')}}</span>
                 </a>
             </div>
             <hr>
@@ -53,7 +53,7 @@
                         <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseProducts" aria-expanded="false"
                                 aria-controls="collapseProducts">
-                            Ürün Yönetimi
+                            {{__('titles.dashboard.product.product_management')}}
                         </button>
                     </p>
                     <div class="collapse" id="collapseProducts">
@@ -61,13 +61,13 @@
                             <ul class="list-unstyled">
                                 <li>
                                     <a href="{{route('admin.product.list')}}" class="nav-link text-white">
-                                        Ürünler
+                                        {{__('titles.dashboard.product.products')}}
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="{{route('admin.product.add')}}" class="nav-link text-white">
-                                        Yeni Ürün Ekle
+                                        {{__('titles.dashboard.product.product_add')}}
                                     </a>
                                 </li>
                             </ul>
@@ -78,7 +78,7 @@
                     <p class="d-inline-flex gap-1">
                         <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseReviews" aria-expanded="false" aria-controls="collapseReviews">
-                            Değerlendirme Yönetimi
+                            {{__('titles.dashboard.review.review_management')}}
                         </button>
                     </p>
                     <div class="collapse" id="collapseReviews">
@@ -86,12 +86,12 @@
                             <ul class="list-unstyled">
                                 <li>
                                     <a href="{{route('admin.review.waiting.list')}}" class="nav-link text-white">
-                                        Onay Bekleyen Değerlendirmeler
+                                        {{__('titles.dashboard.review.waiting_reviews')}}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{route('admin.review.list')}}" class="nav-link text-white">
-                                        Tüm Değerlendirmeler
+                                        {{__('titles.dashboard.review.reviews')}}
                                     </a>
                                 </li>
                             </ul>
@@ -103,7 +103,7 @@
                         <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseCategories" aria-expanded="false"
                                 aria-controls="collapseCategories">
-                            Kategori Yönetimi
+                            {{__('titles.dashboard.category.category_management')}}
                         </button>
                     </p>
                     <div class="collapse" id="collapseCategories">
@@ -111,13 +111,13 @@
                             <ul class="list-unstyled ">
                                 <li>
                                     <a href="{{route('admin.category.list')}}" class="nav-link text-white">
-                                        Kategoriler
+                                        {{__('titles.dashboard.category.categories')}}
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="{{route('admin.category.add')}}" class="nav-link text-white">
-                                        Yeni Kategori Ekle
+                                        {{__('titles.dashboard.category.category_add')}}
                                     </a>
                                 </li>
                             </ul>
@@ -128,7 +128,7 @@
                     <p class="d-inline-flex gap-1">
                         <button class="btn border-0 text-white" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                            Kullanıcı Yönetimi
+                            {{__('titles.dashboard.user.user_management')}}
                         </button>
                     </p>
                     <div class="collapse" id="collapseUsers">
@@ -136,7 +136,7 @@
                             <ul class="list-unstyled">
                                 <li>
                                     <a href="{{route('admin.user.list')}}" class="nav-link text-white">
-                                        Kullanıcılar
+                                        {{__('titles.dashboard.user.users')}}
                                     </a>
                                 </li>
                             </ul>

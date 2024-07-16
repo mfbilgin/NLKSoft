@@ -1,6 +1,6 @@
 @php use App\Models\User; @endphp
 @extends('layouts.admin')
-@section('title','Users')
+@section('title',__('titles.titles.users'))
 @section('admin-content')
     @php($users = (new User)->getAllUsers())
     <div class="container text-center">
@@ -8,10 +8,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Ad</th>
-                    <th scope="col">Soyad</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Role</th>
+                    <th scope="col">{{__('titles.user.first_name')}}</th>
+                    <th scope="col">{{__('titles.user.last_name')}}</th>
+                    <th scope="col">{{__('titles.user.email')}}</th>
+                    <th scope="col">{{__('titles.user.role')}}</th>
                     <th scope="col">#</th>
                     <th scope="col">#</th>
                 </tr>
@@ -32,7 +32,7 @@
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" class="btn btn-warning">
-                                            <i class="bi bi-arrow-down-circle"></i> Kullanıcıya Düşür
+                                            <i class="bi bi-arrow-down-circle"></i> {{__('titles.user.downgrade')}}
                                         </button>
                                     </form>
                                 @else
@@ -42,7 +42,7 @@
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" class="btn btn-warning">
-                                            <i class="bi bi-arrow-up-circle"></i> Admine Yükselt
+                                            <i class="bi bi-arrow-up-circle"></i> {{__('titles.user.upgrade')}}
                                         </button>
                                     </form>
                                 @endif
@@ -52,7 +52,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">
-                                        <i class="bi bi-trash3"></i> Kullanıcı Sil
+                                        <i class="bi bi-trash3"></i> {{__('titles.general.delete')}}
                                     </button>
                                 </form>
                             </td>

@@ -1,5 +1,6 @@
 @php use App\Models\Cart;use App\Models\CartItem; @endphp
 @extends('layouts.app')
+@section('title',__('titles.titles.cart'))
 @section('styles')
     <style>
 
@@ -38,7 +39,6 @@
         }
     </style>
 @endsection
-@section('title','Sepetim')
 @section('content')
     @php
         $user_id = auth()->id();
@@ -52,7 +52,7 @@
             <div class="col-8">
                 <div class="row">
                     <div class="col-6">
-                        <h3 class="mb-lg-5 mb-md-2">Sepetim ({{count($cart_items)}} Ürün)</h3>
+                        <h3 class="mb-lg-5 mb-md-2">{{__('titles.cart.cart')}} ({{count($cart_items)}} {{__('titles.cart.product')}})</h3>
                     </div>
                     <div class="col-6">
                         <form action="{{route('cart.empty')}}" method="post" class="float-end">
@@ -60,7 +60,7 @@
                             @method('DELETE')
                             <input type="hidden" name="_method" value="DELETE">
                             <i onclick="clear_cart()" class="bi bi-trash3 text-danger fs-5" style="cursor: pointer"
-                               data-bs-toggle="tooltip" data-bs-title="Sepeti Boşalt"></i>
+                               data-bs-toggle="tooltip" data-bs-title="{{__('titles.cart.clear')}}"></i>
                         </form>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-header bg-warning-subtle text-center">
-                        Sipariş Özeti
+                        {{__('titles.cart.summary')}}
                     </div>
                     <div class="card-body">
                         <ul class="list-group">
@@ -164,7 +164,7 @@
                                 <div class="row">
                                     <div class="col-8">
                                     <span>
-                                        Ürünlerin Toplamı :
+                                        {{__('titles.cart.product_total')}} :
                                     </span>
                                     </div>
                                     <div class="col-4">
@@ -178,7 +178,7 @@
                                 <div class="row">
                                     <div class="col-8">
                                     <span>
-                                        İndirim :
+                                        {{__('titles.cart.discount')}} :
                                     </span>
                                     </div>
                                     <div class="col-4">
@@ -193,7 +193,7 @@
                                 <div class="row">
                                     <div class="col-8">
                                     <span>
-                                        Toplam :
+                                        {{__('titles.cart.total')}} :
                                     </span>
                                     </div>
                                     <div class="col-4">
@@ -207,7 +207,7 @@
                     </div>
                 </div>
                 <div class="d-grid gap-2 mt-3">
-                    <a href="{{route('address.select')}}" class="btn btn-warning" type="button">Sepeti Onayla</a>
+                    <a href="{{route('address.select')}}" class="btn btn-warning" type="button">{{__('titles.cart.confirm')}}</a>
                 </div>
             </div>
         </div>

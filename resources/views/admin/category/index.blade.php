@@ -1,17 +1,17 @@
 @php use App\Models\Category; @endphp
 @extends('layouts.admin')
-@section('title','Categories')
+@section('title',__('titles.titles.categories'))
 @section('admin-content')
     @php($categories = Category::orderBy('name','asc')->get())
     <div class="container text-center">
         <div>
             <a class="btn btn-primary float-end" href="{{route('admin.category.add')}}">
-                <i class="bi bi-plus-circle-dotted"></i> Yeni Ekle
+                <i class="bi bi-plus-circle-dotted"></i> {{__('titles.category.add')}}
             </a>
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Kategori Adı</th>
+                    <th scope="col">{{__('titles.category.name')}}</th>
                     <th scope="col">#</th>
                     <th scope="col">#</th>
                 </tr>
@@ -22,7 +22,7 @@
                         <td>{{$category->name}}</td>
                         <td>
                             <a href="{{route('category.edit', $category->id)}}" type="submit" class="btn btn-warning">
-                                <i class="bi bi-pencil"></i> Güncelle
+                                <i class="bi bi-pencil"></i> {{__('titles.general.update')}}
                             </a>
                         </td>
                         <td>
@@ -30,7 +30,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">
-                                    <i class="bi bi-trash3"></i> Sil
+                                    <i class="bi bi-trash3"></i> {{__('titles.general.delete')}}
                                 </button>
                             </form>
                         </td>

@@ -1,6 +1,6 @@
 @php use App\Models\ProductReview;use App\Models\User; @endphp
 @extends('layouts.admin')
-@section('title','Reviews')
+@section('title',__('titles.titles.waiting_reviews'))
 @section('admin-content')
     @php($reviews = (new ProductReview())->get_waiting())
     <div class="container text-center">
@@ -8,10 +8,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Puan</th>
-                    <th scope="col">Yorum</th>
-                    <th scope="col">Kullanıcı Adı</th>
-                    <th scope="col">Ürün Adı</th>
+                    <th scope="col">{{__('titles.review.rating')}}</th>
+                    <th scope="col">{{__('titles.review.comment')}}</th>
+                    <th scope="col">{{__('titles.review.user')}}</th>
+                    <th scope="col">{{__('titles.review.product')}}</th>
                     <th scope="col">#</th>
                     <th scope="col">#</th>
                 </tr>
@@ -31,7 +31,7 @@
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-check-circle"></i> Onayla
+                                    <i class="bi bi-check-circle"></i> {{__('titles.review.approve')}}
                                 </button>
                             </form>
                         </td>
@@ -40,7 +40,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">
-                                    <i class="bi bi-trash3"></i> Yorumu Sil
+                                    <i class="bi bi-trash3"></i> {{__('titles.general.delete')}}
                                 </button>
                             </form>
                         </td>

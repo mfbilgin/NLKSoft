@@ -28,8 +28,10 @@
     <div class="container">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('home')}}" class="text-black text-decoration-none">Ana
-                        sayfa</a></li>
+                <li class="breadcrumb-item"><a href="{{route('home')}}" class="text-black text-decoration-none">
+                        {{__('titles.titles.home')}}
+                    </a>
+                </li>
                 <li class="breadcrumb-item"><a
                         href="{{route('product.by.category',['category_id' => $product->category->id])}}"
                         class="text-black text-decoration-none">{{$product->category->name}}</a></li>
@@ -77,27 +79,25 @@
                     <div class="col-6">
                         <div class="text-center mt-5">
                             <p class="fs-5 fw-bold card-text">
-                                {{$product->get_avg_rating()}} / 5 ({{$product->get_reviews_count()}} değerlendirme)
+                                {{$product->get_avg_rating()}} / 5 ({{$product->get_reviews_count()}} {{__('titles.review.review')}})
                             </p>
                             @if($product->get_reviews_count() == 0)
                                 @if(auth()->check() &&((auth()->user()->is_bought_product($product) == 1)))
-                                    <a href="#rating" class="text-muted" style="font-size: 0.8rem">Bu
-                                        ürün için henüz değerlendirme
-                                        yapılmamış. İlk sen değerlendir.</a>
+                                    <a href="#rating" class="text-muted" style="font-size: 0.8rem">{{__('messages.product.review_first')}}</a>
                                 @else
                                     <span class="text-muted" style="font-size: 0.8rem">
-                                        Bu ürün için henüz değerlendirme yapılmamış.
+                                        {{__('messages.product.no_review')}}
                                     </span>
                                 @endif
                             @else
                                 <a href="#rating" class="text-muted" style="font-size: 0.8rem">
-                                    Değerlendirmeleri Göster
+                                    {{__('titles.product.show_reviews')}}
                                 </a>
                             @endif
                         </div>
                     </div>
                 </div>
-                <a href="#description" class="text-muted mt-3 text-decoration-none go-to-desc">Ürün Detayı</a>
+                <a href="#description" class="text-muted mt-3 text-decoration-none go-to-desc">{{__('titles.product.detail')}}</a>
                 @if($product->unitsInStock < 25)
                     <div class="text-center">
                         <div class="mt-5">
@@ -112,7 +112,7 @@
                     @csrf
                     <input type="hidden" name="product_id" value="{{$product->id}}">
                     <button class="btn btn-success w-100  bi bi-cart-plus-fill" type="submit">
-                        Sepete Ekle
+                        {{__('titles.product.add_to_cart')}}
                     </button>
                 </form>
             </div>

@@ -46,7 +46,7 @@
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="review_id" value="{{$review->id}}">
-                            <button type="submit" class="btn btn-danger bi bi-trash3 float-end">Sil</button>
+                            <button type="submit" class="btn btn-danger bi bi-trash3 float-end"> {{__('titles.general.delete')}}</button>
                         </form>
                     </div>
                     @endif

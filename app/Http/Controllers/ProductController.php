@@ -16,7 +16,6 @@ class ProductController extends Controller
 {
     public function index(Request $request): Factory|\Illuminate\Foundation\Application|View|Application
     {
-
         $query = Product::query();
         $query->where('unitsInStock','>',0);
         $query->orderBy('category_id');
@@ -26,6 +25,8 @@ class ProductController extends Controller
 
         if($request->has('min_price') && $request->has('max_price')){
             $query->whereBetween('unitPrice',[$request->get('min_price'),$request->get('max_price')]);
+        }else if($request->has('min_price') && !$request->has('max_price')){
+            $query->where('unitPrice','>=',$request->get('min_price'));
         }
 
         if ($request->has('search')) {
@@ -33,7 +34,7 @@ class ProductController extends Controller
         }
 
         $products = $query->get();
-
+        Log::info(count($products));
         return view('home', compact('products'));
 
     }

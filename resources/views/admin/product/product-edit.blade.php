@@ -1,10 +1,10 @@
 @php use App\Models\Category; @endphp
 @extends('layouts.admin')
-@section('title','Edit Product')
+@section('title',__('titles.titles.product_edit'))
 @section('admin-content')
     @php($categories = Category::all())
     <div class="text-center mb-5">
-        <h1>{{$product->name}} Ürününü Güncelle</h1>
+        <h1>{{$product->name}} {{__('titles.general.update')}}</h1>
     </div>
     <div class="container-fluid">
         <form action="{{route('product.update',$product->id)}}" method="post" enctype="multipart/form-data"
@@ -16,10 +16,10 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="name" name="name"
                                value="{{ $product->name }}" placeholder="" required>
-                        <label for="name">Ürün Adı</label>
+                        <label for="name">{{__('titles.product.name')}}</label>
                     </div>
                     <div class="mt-auto">
-                        <label for="description">Ürün Açıklaması</label>
+                        <label for="description">{{__('titles.product.description')}}</label>
                         <textarea class="form-control" id="description" name="description" placeholder=""
                                   rows="4"
                                   required>{{ $product->description }}</textarea>
@@ -29,12 +29,12 @@
                     <div class="form-floating mb-3">
                         <input type="number" class="form-control" id="unitPrice" name="unitPrice"
                                value="{{ $product->unitPrice }}" placeholder="" required>
-                        <label for="unitPrice">Adet Fiyatı</label>
+                        <label for="unitPrice">{{__('titles.product.price')}}</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="number" class="form-control" id="unitsInStock" name="unitsInStock"
                                value="{{ $product->unitsInStock }}" placeholder="" required>
-                        <label for="unitsInStock">Stok Adedi</label>
+                        <label for="unitsInStock">{{__('titles.product.stock')}}</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select" id="category_id" name="category_id" required>
@@ -45,24 +45,25 @@
                                 @endif
                             @endforeach
                         </select>
-                        <label for="category_id">Kategori</label>
+                        <label for="category_id">{{__('titles.product.category')}}</label>
                     </div>
                     <div class="mb-3 @if(count($product->images) == 5) d-none @endif">
-                        <label for="images" class="form-label">Yeni fotoğraf ekle</label>
+                        <label for="images" class="form-label">{{__('titles.product.add_image')}}</label>
                         <input type="file" class="form-control" id="images" name="images[]"
                                accept=".png, .jpg, .jpeg, .gif, .webp" multiple>
                     </div>
                     <a id="update-button" class="btn btn-warning container-fluid float-end mt-auto"
                        onclick="sendForm()"><i
-                            class="bi bi-pencil-square"></i> Ürünü Güncelle
+                            class="bi bi-pencil-square"></i> {{__('titles.general.update')}}
                     </a>
                 </div>
             </div>
         </form>
 
         <div class="mt-4">
-            <p class="text-black-50 text-center @if(count($product->images) == 0) d-none @endif">Silmek
-                istediğiniz resmin üzerine tıklayın</p>
+            <p class="text-black-50 text-center @if(count($product->images) == 0) d-none @endif">
+                {{__('messages.product.click_for_delete')}}
+            </p>
             <div class="container-fluid">
 
                 @foreach($product->images as $image)
@@ -129,7 +130,7 @@
             CKEDITOR.replace("description");
             document.querySelectorAll('.delete-image').forEach(function (img) {
                 img.addEventListener('click', function () {
-                    if (confirm('Bu resmi silmek istediğinize emin misiniz?')) {
+                    if (confirm('{{__('messages.product.confirm_delete')}}')) {
                         img.nextElementSibling.submit();
                     }
                 });

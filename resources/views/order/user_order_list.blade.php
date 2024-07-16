@@ -2,7 +2,7 @@
 {{-- resources/views/orders/index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Siparişlerim')
+@section('title', __('titles.titles.orders'))
 
 @section('styles')
     <style>
@@ -27,7 +27,7 @@
 
 @section('content')
     <div class="container mt-5" style="width: 70%">
-        <h2 class=" mb-4">Siparişlerim</h2>
+        <h2 class=" mb-4">{{__('titles.order.orders')}}</h2>
         @foreach($orders as $order)
             @php
                 $created_at = Carbon::parse($order->created_at);
@@ -38,23 +38,23 @@
                 <div class="card-header">
                     <div class="row text-start text-center d-flex justify-content-center">
                         <div class="col">
-                            <p class="text-small fw-bold">Sipariş Tarihi</p>
+                            <p class="text-small fw-bold">{{__('titles.order.date')}}</p>
                             <p class="text-small">{{$created_at}}</p>
                         </div>
                         <div class="col">
-                            <p class="text-small fw-bold">Sipariş Özeti</p>
-                            <p class="text-small">{{ $order->order_items()->count() }} Ürün</p>
+                            <p class="text-small fw-bold">{{__('titles.order.summary')}}</p>
+                            <p class="text-small">{{ $order->order_items()->count() }} {{__('titles.order.product')}}</p>
                         </div>
                         <div class="col">
-                            <p class="text-small fw-bold">Alıcı</p>
+                            <p class="text-small fw-bold">{{__('titles.order.buyer')}}</p>
                             <p class="text-small">{{ $order->user->name }}</p>
                         </div>
                         <div class="col">
-                            <p class="text-small fw-bold">Tutar</p>
+                            <p class="text-small fw-bold">{{__('titles.order.amount')}}</p>
                             <p class="text-small" style="color: darkorange">{{ $order->total_amount}} ₺</p>
                         </div>
                         <div class="col">
-                            <a href="{{route('order.detail',$order->id)}}" class="btn btn-warning w-100">Sipariş Detayı</a>
+                            <a href="{{route('order.detail',$order->id)}}" class="btn btn-warning w-100">{{__('titles.order.detail')}}</a>
                         </div>
                     </div>
                 </div>
@@ -64,14 +64,13 @@
                             <p class=" {{$order->status}}"> {{$order->status}}</p>
                             @if($order->status == 'Hazırlanıyor')
                                 <p class="text-small">
-                                    Tahmini Kargolama
-                                    Tarihi: <span class="fw-bold">
+                                    {{__('titles.order.est_shipping')}}: <span class="fw-bold">
                                         {{Carbon::parse($order->created_at)->addDays(2)->translatedFormat('d F Y')}}
                                     </span>
                                 </p>
                             @elseif($order->status == 'Kargoya Verildi')
                                 <p class="text-small">
-                                    Tahmini Teslimat Tarihi:
+                                    {{__('titles.order.est_delivery')}}:
                                     <span
                                         class="fw-bold">{{Carbon::parse($order->updated_at)->addDays(3)->translatedFormat('d F Y')}}</span>
                                 </p>
